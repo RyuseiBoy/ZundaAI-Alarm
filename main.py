@@ -13,8 +13,8 @@ def main():
     ]
 
     response = llm(messages)
-    print(response.content)
-    #text_to_voice(response.content)
+    #print(response.content)
+    text_to_voice(response.content)
 
 if __name__ == '__main__':
     main()
