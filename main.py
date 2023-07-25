@@ -1,6 +1,8 @@
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import (SystemMessage, HumanMessage, AIMessage)
 from voicevox import text_to_voice
+import schedule
+import time
 
 def main():
     llm = ChatOpenAI(temperature=0)
@@ -14,7 +16,22 @@ def main():
 
     response = llm(messages)
     #print(response.content)
-    text_to_voice(response.content)
+    #text_to_voice(response.content)
+
+    #目覚まし設定時間取得
+    print("目覚ましをセットする時間を指定してください")
+    hour = input("時間（hour）:")
+    minute = input("分（minute）:")
+    target = f"{hour.zfill(2)}:{minute.zfill(2)}"
+    print(target+"にアラームをセットしました")
+
+    #アラーム時間設定
+    schedule.every().day.at(target).do(text_to_voice, response.content)
+    #アラーム待ち
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
 
 if __name__ == '__main__':
     main()
